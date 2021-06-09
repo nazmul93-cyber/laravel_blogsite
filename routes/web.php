@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,28 @@ use App\Http\Controllers\UserController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+// for Form Validation
+
+Route::get('/register',[RegisterController::class,'register']);
+Route::post('/register',[RegisterController::class,'create']);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // for CRUD using Model
 
@@ -35,5 +58,8 @@ Route::get('/delete/{id}',[UserController::class,'delete']);
 Route::get('/update/{id}',[UserController::class,'upForm']);
 
 Route::post('/update',[UserController::class,'update']);
+
+
+
 
 
