@@ -51,7 +51,7 @@
 
     <div class="col-md-4 mb-3">
       <label for="validationCustomUsername">Email</label>
-      <input type="text" name="email" class="form-control" id="validationCustomUsername" placeholder="Your email" aria-describedby="inputGroupPrepend" required>
+      <input type="email" name="email" class="form-control" id="validationCustomUsername" placeholder="Your email" aria-describedby="inputGroupPrepend" required>
       @if($errors->has('email'))
         <div class="text-danger">
             {{$errors->first('email')}}
@@ -69,7 +69,7 @@
 
     <div class="col-md-4 mb-3">
       <label for="validationCustom04">Password</label>
-      <input type="text" name="password" class="form-control" id="validationCustom04" placeholder="Your password" required>
+      <input type="password" name="password" class="form-control" id="validationCustom04" placeholder="Your password" required>
       @if($errors->has('password'))
         <div class="text-danger">
             {{$errors->first('password')}}
@@ -79,7 +79,7 @@
     
     <div class="col-md-4 mb-3">
       <label for="validationCustom05">Confirm Password</label>
-      <input type="text" name="confirm_password" class="form-control" id="validationCustom05" placeholder="Your password again" required>
+      <input type="password" name="confirm_password" class="form-control" id="validationCustom05" placeholder="Your password again" required>
       @if($errors->has('confirm_password'))
         <div class="text-danger">
             {{$errors->first('confirm_password')}}
