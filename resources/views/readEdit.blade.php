@@ -53,7 +53,18 @@
             
     </table>
 
+    <!-- {{$kuser->onEachSide(1)->links()}}         did not work -->
+    {{$kuser->links()}}
+
     <h3>To add users visit <a href="/create">here</a></h3>
+
+
+    <!-- css style to remove the arrows -->
+    <style>
+        .w-5 {
+            display: none;
+        }
+    </style>
     
 </body>
 </html>

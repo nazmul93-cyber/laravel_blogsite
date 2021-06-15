@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -45,13 +46,22 @@ class UserController extends Controller
     public function read(Request $req) {
 
         // $user = User::all();
+        // $user = User::Paginate(5);      //  5 data per page
         // $user = User::get('name');
 
         // $id = $req->search;
         // $user = User::where('id',$id)->get();
 
         $name = $req->search;
-        $user = User::where('name','like','%'.$name.'%')->get();  
+        // $user = User::where('name','like','%'.$name.'%')->get();  
+        $user = User::where('name','like','%'.$name.'%')->paginate(5);   // 5 data per page
+        // $user = User::where('name','like','%'.$name.'%')->simplePaginate(5);   // 5 data per page
+        // $user = User::where('name','like','%'.$name.'%')->cursorPaginate(5);   // 5 data per page    // did not work 
+
+
+        //using query builder
+        // $user = DB::table('users')->get();
+        // $user = DB::table('users')->paginate(5);
 
 
        return view('readEdit',['kuser'=>$user]);

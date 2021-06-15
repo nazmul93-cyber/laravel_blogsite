@@ -20,11 +20,33 @@ Route::get('/', function () {
 });
 
 
-// for Form Validation
+// for Form Validation - Registration [manual]
 
 Route::get('/register',[RegisterController::class,'register']);
 Route::post('/register',[RegisterController::class,'create']);
 
+
+// for Login Auth [manual]
+
+
+
+
+// custom login using middleware and session
+
+Route::group(['middleware'=>'web'], function() {
+
+    Route::get('/login', function() {
+
+        return view('login');
+    });
+    Route::post('/login',[RegisterController::class,'login']);
+    
+    Route::get('/dashboard', function() {
+        
+        return view('dashboard');
+    });
+
+});
 
 
 

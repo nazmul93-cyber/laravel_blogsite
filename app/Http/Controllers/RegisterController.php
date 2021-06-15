@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Register;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Session;
 
 class RegisterController extends Controller
 {
@@ -51,8 +53,45 @@ class RegisterController extends Controller
 
         $reg = Register::create($validatedData);
 
-        return back()->with('success','Congrats!!! You are registered');    // can be accessed with Session::has('success') in the view and for the error->has('name'), $errors
+        return redirect('/login')->with('success','Congrats!!! You are registered');    // can be accessed with Session::has('success') in the view and for the error->has('name'), $errors
 
     }   
+
+    // public function login(Request $request) {
+        
+    //     $credentials = $request->validate([
+    //         'email' => ['required', 'email'],
+    //         'password' => ['required'],
+    //     ]);
+
+    //     if (Auth::attempt($credentials)) {
+    //         $request->session()->regenerate();
+
+    //         return redirect()->intended('dashboard');
+    //     }
+
+    //     return back()->withErrors([
+    //         'email' => 'The provided credentials do not match our records.',
+    //     ]);
+    // }
+
+    public function login(Request $req) {
+
+        $user = Register::whereEmail($req->email)->get();
+        // return Hash::check($req->password,$user[0]->password);          // if returns 1; then matches
+
+        if (Hash::check($req->password,$user[0]->password)) {
+                $req->session()->put('user', $req->name);
+                return redirect('dashboard');
+        }
+
+        // return back()->withSuccess([
+
+        //         'email' => 'The provided credentials do not match our records.',
+
+        //     ]);
+
+        return back()->withFailed('Login credentials do not match records');
+    }
 
 }

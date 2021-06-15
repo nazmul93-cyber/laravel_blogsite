@@ -13,7 +13,9 @@
 <body>
 
 <div class="container" style="margin-top:5vh;">
-@if(Session::has('success'))
+
+
+<!-- @if(Session::has('success'))
 <div class="card card-inverse card-success text-center alert alert-success">
   <div class="card-block">
     <blockquote class="card-blockquote">
@@ -24,14 +26,16 @@
     </blockquote>
   </div>
 </div>
-@endif
+@endif -->
+
+
 
 <form class="needs-validation" novalidate action="/register" method="POST">
 @csrf
 <div class="form-row">      <!-- this div contains 3 columns above md -->
     <div class="col-md-4 mb-3">
-      <label for="validationCustom01">Name</label>
-      <input type="text" name="name" class="form-control" id="validationCustom01" placeholder="Your Name" required>
+      <label for="field1">Name</label>
+      <input type="text" name="name" class="form-control" id="field1" placeholder="Your Name" required>
       @if($errors->has('name'))
         <div class="text-danger">
             {{$errors->first('name')}}
@@ -40,8 +44,8 @@
     </div>
 
     <div class="col-md-4 mb-3">
-      <label for="validationCustom02">Phone</label>
-      <input type="number" name="phone" class="form-control" id="validationCustom02" placeholder="Your phone number" required>
+      <label for="field2">Phone</label>
+      <input type="number" name="phone" class="form-control" id="field2" placeholder="Your phone number" required>
       @if($errors->has('phone'))
         <div class="text-danger">
             {{$errors->first('phone')}}
@@ -50,8 +54,8 @@
     </div>
 
     <div class="col-md-4 mb-3">
-      <label for="validationCustomUsername">Email</label>
-      <input type="email" name="email" class="form-control" id="validationCustomUsername" placeholder="Your email" aria-describedby="inputGroupPrepend" required>
+      <label for="field3">Email</label>
+      <input type="email" name="email" class="form-control" id="field3" placeholder="Your email" aria-describedby="inputGroupPrepend" required>
       @if($errors->has('email'))
         <div class="text-danger">
             {{$errors->first('email')}}
@@ -63,13 +67,13 @@
 
 <div class="form-row">  <!-- this div contains 2 columns above md -->
     <div class="col-md-4 mb-3">
-      <label for="validationCustom03">Address</label>
-      <input type="text" name="address" class="form-control" id="validationCustom03" placeholder="Your City,Contry" >
+      <label for="field4">Address</label>
+      <input type="text" name="address" class="form-control" id="field4" placeholder="Your City,Contry" >
     </div>
 
     <div class="col-md-4 mb-3">
-      <label for="validationCustom04">Password</label>
-      <input type="password" name="password" class="form-control" id="validationCustom04" placeholder="Your password" required>
+      <label for="field5">Password</label>
+      <input type="password" name="password" class="form-control" id="field5" placeholder="Your password" required>
       @if($errors->has('password'))
         <div class="text-danger">
             {{$errors->first('password')}}
@@ -78,8 +82,8 @@
     </div>
     
     <div class="col-md-4 mb-3">
-      <label for="validationCustom05">Confirm Password</label>
-      <input type="password" name="confirm_password" class="form-control" id="validationCustom05" placeholder="Your password again" required>
+      <label for="field6">Confirm Password</label>
+      <input type="password" name="confirm_password" class="form-control" id="field6" placeholder="Your password again" required>
       @if($errors->has('confirm_password'))
         <div class="text-danger">
             {{$errors->first('confirm_password')}}
