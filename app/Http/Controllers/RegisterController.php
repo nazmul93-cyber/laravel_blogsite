@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Register;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use Session;
+
 
 class RegisterController extends Controller
 {
@@ -57,6 +57,7 @@ class RegisterController extends Controller
 
     }   
 
+// trial with Auth facade [could not log in]
     // public function login(Request $request) {
         
     //     $credentials = $request->validate([
@@ -75,23 +76,38 @@ class RegisterController extends Controller
     //     ]);
     // }
 
-    public function login(Request $req) {
+// trial with custom logic, middleware, session [logged in but session not working]
+    // public function login(Request $req) {
 
-        $user = Register::whereEmail($req->email)->get();
-        // return Hash::check($req->password,$user[0]->password);          // if returns 1; then matches
+    //     $user = Register::whereEmail($req->email)->get();
+    //     // return Hash::check($req->password,$user[0]->password);          // if returns 1; then matches
 
-        if (Hash::check($req->password,$user[0]->password)) {
-                $req->session()->put('user', $req->name);
-                return redirect('dashboard');
-        }
+    //     if (Hash::check($req->password,$user[0]->password)) {
+    //             $req->session()->put("user","Logged In");
+    //             return redirect('dashboard');
+    //     }
 
-        // return back()->withSuccess([
+    //     // return back()->withSuccess([
 
-        //         'email' => 'The provided credentials do not match our records.',
+    //     //         'email' => 'The provided credentials do not match our records.',
 
-        //     ]);
+    //     //     ]);
 
-        return back()->withFailed('Login credentials do not match records');
-    }
+    //     return back()->withFailed('Login credentials do not match records');
+    // }
+
+
+// trial with auth() helper [sined in but middleware not working right]
+
+        // public function login(Request $request) {
+
+        //     // $test = $request->only("email","password");
+        //     // dd($test);
+        //     // dd($request->remember);             // returns string "on"
+
+        //     auth()->attempt($request->only("email","password"),$request->remember);        // auto hash checked | wow!!!
+
+        //     return redirect("dashboard")->withSuccess('welcome to your profile');   // i guess, a session/flash named success
+        // }
 
 }

@@ -21,10 +21,31 @@ class CustomAuth
         
         $path = $request->path();   // current url path
 
-        if (($path == "login" || $path == "register") && (Session::get('user'))) {
+        // echo $path;
 
-                return redirect('/dashboard');
-        }
+
+        // if (($path == "login" || $path == "register") && (Session::get('user'))) {
+
+        //         return redirect('/dashboard');
+        // }
+
+
+        // if($request->remember == "on") {
+
+            // if($path == "login") {
+
+            //     return redirect("dashboard");
+            // }
+        // }
+
+        // if(auth()->user() && $path == "login"){
+           
+
+        //     return redirect("dashboard");
+        // }
+        
+
+
         return $next($request);
     }
 }

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\UploadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,35 +21,38 @@ Route::get('/', function () {
 });
 
 
+Route::get('upload',[UploadController::class,'upload']);
+Route::post('upload',[UploadController::class,'uploaded']);
+
+
+
+
+
+
+
 // for Form Validation - Registration [manual]
 
 Route::get('/register',[RegisterController::class,'register']);
 Route::post('/register',[RegisterController::class,'create']);
 
 
-// for Login Auth [manual]
-
-
-
 
 // custom login using middleware and session
 
-Route::group(['middleware'=>'web'], function() {
+// Route::group(['middleware'=>'web'], function() {
 
-    Route::get('/login', function() {
+//     Route::get('/login','login');
+//     Route::post('/login',[RegisterController::class,'login']);
+//     Route::view('/dashboard','dashboard');
 
-        return view('login');
-    });
-    Route::post('/login',[RegisterController::class,'login']);
-    
-    Route::get('/dashboard', function() {
-        
-        return view('dashboard');
-    });
-
-});
+// });
 
 
+// auth helper trial
+
+// Route::get('/login','login');
+// Route::post('/login',[RegisterController::class,'login']);
+// Route::view('/dashboard','dashboard');
 
 
 
