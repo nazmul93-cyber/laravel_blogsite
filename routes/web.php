@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UploadController;
+use App\Models\Article;
+use Illuminate\Support\Facades\Cache;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +19,13 @@ use App\Http\Controllers\UploadController;
 */
 
 Route::get('/', function () {
+    $articles = Cache::remember('articles',600, function() {
+        return Article::all();
+    });   
+    // $articles = Article::all();
+    
+    Debugbar::info($articles);
+    
     return view('welcome');
 });
 
