@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Models\Register;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -49,7 +50,10 @@ class RegisterController extends Controller
             'password.required'=>'must contain your password',
         ]);
 
-        $validatedData['password'] = Hash::make($validatedData['password']);    // saving password as Hash
+        // $validatedData['password'] = Hash::make($validatedData['password']);    // saving password as Hash 
+        
+        $validatedData['password'] = bcrypt($validatedData['password']);    // saving password as Hash using handler
+
 
         $reg = Register::create($validatedData);
 
@@ -57,47 +61,94 @@ class RegisterController extends Controller
 
     }   
 
-// trial with Auth facade [could not log in]
+// trial with Auth facade [could not even log in]
+
     // public function login(Request $request) {
         
-    //     $credentials = $request->validate([
-    //         'email' => ['required', 'email'],
-    //         'password' => ['required'],
-    //     ]);
+    //     // $credentials = $request->validate([
+    //     //     'email' => 'required|email|exists:registers,email',
+    //     //     'password' => 'required',
+    //     // ]);
 
-    //     if (Auth::attempt($credentials)) {
-    //         $request->session()->regenerate();
+    //     // $credentials = $request->only('email','password');
 
-    //         return redirect()->intended('dashboard');
-    //     }
+    //     // dd(Register::get());
+    //     // dd($credentials);
+    //     // dd(Auth::attempt($credentials));
 
-    //     return back()->withErrors([
-    //         'email' => 'The provided credentials do not match our records.',
-    //     ]);
+    //     // if (Auth::attempt($credentials)) {
+    //     //     $request->session()->regenerate();
+
+    //     //     return redirect()->intended('dashboard');
+    //     // }
+
+
+
+    //     // dd(Auth::attempt(['email' => $request->email,'password' => $request->password]));
+
+    //     // if (Auth::attempt($request->only('email','password'))) {
+    //     //     $request->session()->regenerate();    // session generation is auto with login hence session regenerate
+
+    //     //     return redirect()->intended('dashboard');
+    //     // }
+
+    //     // // return back()->withErrors([
+    //     // //     'email' => 'The provided credentials do not match our records.',
+    //     // // ]);
+
+    //     // return back()->withInput();
     // }
+
+
+
 
 // trial with custom logic, middleware, session [logged in but session not working]
-    // public function login(Request $req) {
 
-    //     $user = Register::whereEmail($req->email)->get();
-    //     // return Hash::check($req->password,$user[0]->password);          // if returns 1; then matches
-
-    //     if (Hash::check($req->password,$user[0]->password)) {
-    //             $req->session()->put("user","Logged In");
-    //             return redirect('dashboard');
-    //     }
-
-    //     // return back()->withSuccess([
-
-    //     //         'email' => 'The provided credentials do not match our records.',
-
-    //     //     ]);
-
-    //     return back()->withFailed('Login credentials do not match records');
-    // }
+    public function login(Request $request) {
 
 
-// trial with auth() helper [sined in but middleware not working right]
+        $request->validate([
+        
+            'email'=>'required|email|exists:registers,email',    
+            'password'=>'required',    
+        ]);
+
+        $user = Register::whereEmail($request->email)->get();
+              
+
+
+        // dd(Hash::check($request->password,$user[0]->password));          // return true if matches
+
+
+        if (Hash::check($request->password,Register::whereEmail($request->email)->first()->password)) {
+
+                $request->session()->put("user","Logged_In");
+
+                return redirect()->intended('dashboard');
+
+        }
+
+        // return back()->withSuccess([
+
+        //         'email' => 'The provided credentials do not match our records.',
+
+        //     ]);
+
+        return back()->withFailed('Login credentials do not match records');
+    }
+
+    public function logout(Request $request) {
+
+        $request->session()->flush();
+
+        return redirect('/login');
+    }
+
+
+
+
+
+// trial with auth() helper [signin not working]
 
         // public function login(Request $request) {
 
@@ -105,9 +156,12 @@ class RegisterController extends Controller
         //     // dd($test);
         //     // dd($request->remember);             // returns string "on"
 
-        //     auth()->attempt($request->only("email","password"),$request->remember);        // auto hash checked | wow!!!
+        //     auth()->attempt($request->only("email","password"),$request->remember);        
+        // auto hash checked | wow!!!
 
         //     return redirect("dashboard")->withSuccess('welcome to your profile');   // i guess, a session/flash named success
         // }
+
+    
 
 }

@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Session;        // must be added to use session
+// use Session;        // must be added to use session
 
 class CustomAuth
 {
@@ -21,13 +21,18 @@ class CustomAuth
         
         $path = $request->path();   // current url path
 
-        // echo $path;
 
 
-        // if (($path == "login" || $path == "register") && (Session::get('user'))) {
+        // only functioning logic with qoute middleware
 
-        //         return redirect('/dashboard');
-        // }
+        if (($path == "login" || $path == "register")  && $request->session()->has('user')) {
+
+                return redirect('/dashboard');
+        }elseif(($path == "dashboard") && $request->session()->get('user') == null) {
+
+                return redirect('/login');      // add more elseif pages for all other routes
+        }
+       
 
 
         // if($request->remember == "on") {
@@ -37,6 +42,8 @@ class CustomAuth
             //     return redirect("dashboard");
             // }
         // }
+
+
 
         // if(auth()->user() && $path == "login"){
            

@@ -127,7 +127,7 @@ return [
         ],
 
         'default' => [
-            'url' => env('REDIS_URL','localhost'),
+            'url' => env('REDIS_URL'),
             'host' => env('REDIS_HOST', '127.0.0.1'),
             'password' => env('REDIS_PASSWORD', 'easy'),
             'port' => env('REDIS_PORT', '6379'),

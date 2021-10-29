@@ -1,11 +1,19 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UploadController;
-use App\Models\Article;
-use Illuminate\Support\Facades\Cache;
+use App\Http\Controllers\ArticlesController;
+use App\Http\Controllers\QueueController;
+use App\Http\Controllers\JobsController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\MailController;
+use App\Http\Controllers\AlertController;
+use App\Jobs\CustomMailJob;
+use App\Mail\CustomMail;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,18 +26,75 @@ use Illuminate\Support\Facades\Cache;
 |
 */
 
+
+// mail functions 
+
+Route::get('send-email',[MailController::class,"sendMailWithPDF"]);
+
+// new mail function
+// Route::get('mailed', function() {
+//     Mail::to("target@gmail.com")->send(new CustomMail());
+//     // return new CustomMail();
+//     dd("Mail sent successfully");
+// });
+
+// new mail function with jobs
+Route::get('testmail', function() {
+    $details['name'] = "Target";
+    $details['email'] = "target@gmail.com";
+
+    dispatch(new CustomMailJob($details));
+
+    dd('sent');
+    
+});
+
+
+//  sweet alert
+Route::get('users',[AlertController::class,"users"]);
+Route::post('delete/{id}',[AlertController::class,"delete"]);
+
+
+
+
+
 Route::get('/', function () {
-    $articles = Cache::remember('articles',600, function() {
-        return Article::all();
-    });   
+
+    // Debugbar::startMeasure('render','Time for rendering');
+
+    // $articles = Cache::remember('articles',600, function() {
+    //     return Article::where('id','between',1,'and',2000)->get();
+    // });   
+
+    // Debugbar::stopMeasure('render');
+
+
+
+
     // $articles = Article::all();
     
-    Debugbar::info($articles);
+    // Debugbar::info($articles);
     
     return view('welcome');
 });
 
 
+
+// for queue and jobs
+// Route::get('queue',[QueueController::class,'runMyJob']);
+// Route::get('job',[JobsController::class,'TestJob']);
+Route::get('queue',[JobsController::class,'runMyQueue']);
+
+
+
+
+
+// for caching ArticlesController
+Route::get('cache',[ArticlesController::class,'index']);
+
+
+
+// for upload
 Route::get('upload',[UploadController::class,'upload']);
 Route::post('upload',[UploadController::class,'uploaded']);
 
@@ -41,12 +106,21 @@ Route::post('upload',[UploadController::class,'uploaded']);
 
 // for Form Validation - Registration [manual]
 
-Route::get('/register',[RegisterController::class,'register']);
-Route::post('/register',[RegisterController::class,'create']);
+Route::get('/register',[RegisterController::class,'register'])->middleware('custom');
+Route::post('/register',[RegisterController::class,'create'])->middleware('custom');
 
 
 
-// custom login using middleware and session
+// cutom authentication logic,session,middleware  for route middleware - only works with this
+Route::view('/login','login')->middleware('custom');
+Route::post('/login',[RegisterController::class,'login'])->middleware('custom');
+Route::view('/dashboard','dashboard')->middleware('custom');
+Route::get('/logout',[RegisterController::class,'logout'])->middleware('custom');
+
+
+
+
+// custom login using middleware and session    - for some reason group middleware doesn't work
 
 // Route::group(['middleware'=>'web'], function() {
 
@@ -56,12 +130,12 @@ Route::post('/register',[RegisterController::class,'create']);
 
 // });
 
-
-// auth helper trial
-
-// Route::get('/login','login');
+// same with global middleware all set kernel.php with namespace    - not working for some reason
+// Route::view('/login','login');
 // Route::post('/login',[RegisterController::class,'login']);
 // Route::view('/dashboard','dashboard');
+// Route::get('/logout',[RegisterController::class,'logout']);
+
 
 
 
@@ -98,3 +172,7 @@ Route::post('/update',[UserController::class,'update']);
 
 
 
+
+// learnning route resource
+
+Route::resource('product',ProductController::class);
