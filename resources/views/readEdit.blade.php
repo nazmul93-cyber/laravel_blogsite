@@ -60,11 +60,11 @@
 
 
     <!-- css style to remove the arrows -->
-    <style>
+    {{-- <style>
         .w-5 {
             display: none;
         }
-    </style>
+    </style> --}}
     
 </body>
 </html>

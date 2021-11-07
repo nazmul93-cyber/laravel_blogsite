@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+//added
+use Illuminate\Pagination\Paginator;
+
+//default
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +17,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // 
+        Paginator::useBootstrap();
     }
 
     /**
@@ -23,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // to fix weird arrow while using paginate. cause, it takes tailwind as default 
+        Paginator::useBootstrap();
     }
 }

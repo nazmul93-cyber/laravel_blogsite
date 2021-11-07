@@ -139,17 +139,6 @@ Route::get('/logout',[RegisterController::class,'logout'])->middleware('custom')
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 // for CRUD using Model
 
 Route::get('/create', function() {
