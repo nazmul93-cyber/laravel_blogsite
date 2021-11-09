@@ -11,6 +11,8 @@ use App\Http\Controllers\JobsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\AlertController;
+use App\Http\Controllers\StudentController;
+
 use App\Jobs\CustomMailJob;
 use App\Mail\CustomMail;
 use Illuminate\Support\Facades\Mail;
@@ -27,9 +29,24 @@ use Illuminate\Support\Facades\Mail;
 */
 
 
+
+
+// laravel ajax crud - sweetalert - pagination
+Route::get('student/fetch_student', [StudentController::class, 'fetchStudent']);
+Route::resource('student', StudentController::class);
+
+
+
+
+
+
+
+
+
+
 // mail functions 
 
-Route::get('send-email',[MailController::class,"sendMailWithPDF"]);
+Route::get('send-email', [MailController::class, "sendMailWithPDF"]);
 
 // new mail function
 // Route::get('mailed', function() {
@@ -39,20 +56,19 @@ Route::get('send-email',[MailController::class,"sendMailWithPDF"]);
 // });
 
 // new mail function with jobs
-Route::get('testmail', function() {
+Route::get('testmail', function () {
     $details['name'] = "Target";
     $details['email'] = "target@gmail.com";
 
     dispatch(new CustomMailJob($details));
 
     dd('sent');
-    
 });
 
 
 //  sweet alert
-Route::get('users',[AlertController::class,"users"]);
-Route::post('delete/{id}',[AlertController::class,"delete"]);
+Route::get('users', [AlertController::class, "users"]);
+Route::post('delete/{id}', [AlertController::class, "delete"]);
 
 
 
@@ -72,9 +88,9 @@ Route::get('/', function () {
 
 
     // $articles = Article::all();
-    
+
     // Debugbar::info($articles);
-    
+
     return view('welcome');
 });
 
@@ -83,20 +99,20 @@ Route::get('/', function () {
 // for queue and jobs
 // Route::get('queue',[QueueController::class,'runMyJob']);
 // Route::get('job',[JobsController::class,'TestJob']);
-Route::get('queue',[JobsController::class,'runMyQueue']);
+Route::get('queue', [JobsController::class, 'runMyQueue']);
 
 
 
 
 
 // for caching ArticlesController
-Route::get('cache',[ArticlesController::class,'index']);
+Route::get('cache', [ArticlesController::class, 'index']);
 
 
 
 // for upload
-Route::get('upload',[UploadController::class,'upload']);
-Route::post('upload',[UploadController::class,'uploaded']);
+Route::get('upload', [UploadController::class, 'upload']);
+Route::post('upload', [UploadController::class, 'uploaded']);
 
 
 
@@ -106,16 +122,16 @@ Route::post('upload',[UploadController::class,'uploaded']);
 
 // for Form Validation - Registration [manual]
 
-Route::get('/register',[RegisterController::class,'register'])->middleware('custom');
-Route::post('/register',[RegisterController::class,'create'])->middleware('custom');
+Route::get('/register', [RegisterController::class, 'register'])->middleware('custom');
+Route::post('/register', [RegisterController::class, 'create'])->middleware('custom');
 
 
 
 // cutom authentication logic,session,middleware  for route middleware - only works with this
-Route::view('/login','login')->middleware('custom');
-Route::post('/login',[RegisterController::class,'login'])->middleware('custom');
-Route::view('/dashboard','dashboard')->middleware('custom');
-Route::get('/logout',[RegisterController::class,'logout'])->middleware('custom');
+Route::view('/login', 'login')->middleware('custom');
+Route::post('/login', [RegisterController::class, 'login'])->middleware('custom');
+Route::view('/dashboard', 'dashboard')->middleware('custom');
+Route::get('/logout', [RegisterController::class, 'logout'])->middleware('custom');
 
 
 
@@ -141,21 +157,21 @@ Route::get('/logout',[RegisterController::class,'logout'])->middleware('custom')
 
 // for CRUD using Model
 
-Route::get('/create', function() {
+Route::get('/create', function () {
 
     return view('userForm');
 });
 
-Route::post('/create',[UserController::class,'create']);
+Route::post('/create', [UserController::class, 'create']);
 
-Route::get('/read',[UserController::class,'read']);
-Route::post('/read',[UserController::class,'read']);
+Route::get('/read', [UserController::class, 'read']);
+Route::post('/read', [UserController::class, 'read']);
 
-Route::get('/delete/{id}',[UserController::class,'delete']);
+Route::get('/delete/{id}', [UserController::class, 'delete']);
 
-Route::get('/update/{id}',[UserController::class,'upForm']);
+Route::get('/update/{id}', [UserController::class, 'upForm']);
 
-Route::post('/update',[UserController::class,'update']);
+Route::post('/update', [UserController::class, 'update']);
 
 
 
@@ -164,4 +180,4 @@ Route::post('/update',[UserController::class,'update']);
 
 // learnning route resource
 
-Route::resource('product',ProductController::class);
+Route::resource('product', ProductController::class);
