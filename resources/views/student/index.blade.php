@@ -147,38 +147,116 @@
                 e.preventDefault();
                 // alert('del');
                 var student_id = $(this).val(); 
-                $('#delete_student_id').val(student_id);
-                // console.log(student_id);
-                $('#DeleteStudentModal').modal('show');
-            });
-            $(document).on('click', '.delete_student_confirm', function (e) {
-                e.preventDefault();
-                $(this).text('Deleting');
+                // $('#delete_student_id').val(student_id);
+                // // console.log(student_id);
+                // $('#DeleteStudentModal').modal('show');
 
+                swal.fire({
+                    title: "Delete?",
+                    icon: 'question',
+                    text: "Please ensure and then confirm!",
+                    type: "warning",
+                    showCancelButton: !0,
+                    confirmButtonText: "Yes, delete it!",
+                    cancelButtonText: "No, cancel!",
+                    reverseButtons: !0
+                }).then(function (e) {
 
-                var student_id = $('#delete_student_id').val();
-                // alert(student_id);
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    if (e.value === true) {
+                        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+                        $.ajax({
+                            type: 'DELETE',
+                            url: "student/"+student_id,
+                            data: {_token: CSRF_TOKEN},
+                            dataType: 'JSON',
+                            success: function (results) {
+                                if (results.success === true) {
+                                    swal.fire("Done!", results.message, "success"); // text: done! icon: sucess 
+                                    // refresh page after 2 seconds
+                                    setTimeout(function(){
+                                        location.reload();
+                                    },1500);
+                                } else {
+                                    swal.fire("Error!", results.message, "error");
+                                }
+                            }
+                        });
+
+                    } else {
+                        e.dismiss;
                     }
-                });
-                $.ajax({
-                    type: "DELETE",
-                    url: "student/"+student_id,
-                    // data: "data",
-                    // dataType: "dataType",
-                    success: function (response) {
-                        // console.log(response.success);
-                            $('#success_msg').text('');
-                            $('#success_msg').addClass('alert alert-success');
-                            $('#success_msg').text(response.message);
-                            $('#DeleteStudentModal').modal('hide');
-                            $('.delete_student_confirm').text('Yes, Delete');
-                            fetchStudent()   
-                    }
-                });
+
+                }, function (dismiss) {
+                        return false;
+                })
             });
+            // delete confirmation
+            // $(document).on('click', '.delete_student_confirm', function (e) {
+            //     e.preventDefault();
+            //     $(this).text('Deleting');
+            //     var student_id = $('#delete_student_id').val();
+            //     // alert(student_id);
+            //     swal.fire({
+            //         title: "Delete?",
+            //         icon: 'question',
+            //         text: "Please ensure and then confirm!",
+            //         type: "warning",
+            //         showCancelButton: !0,
+            //         confirmButtonText: "Yes, delete it!",
+            //         cancelButtonText: "No, cancel!",
+            //         reverseButtons: !0
+            //     }).then(function (e) {
+
+            //         if (e.value === true) {
+            //             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+            //             $.ajax({
+            //                 type: 'DELETE',
+            //                 url: "student/"+student_id,
+            //                 data: {_token: CSRF_TOKEN},
+            //                 dataType: 'JSON',
+            //                 success: function (results) {
+            //                     if (results.success === true) {
+            //                         swal.fire("Done!", results.message, "success");
+            //                         // refresh page after 2 seconds
+            //                         setTimeout(function(){
+            //                             location.reload();
+            //                         },2000);
+            //                     } else {
+            //                         swal.fire("Error!", results.message, "error");
+            //                     }
+            //                 }
+            //             });
+
+            //         } else {
+            //             e.dismiss;
+            //         }
+
+            //     }, function (dismiss) {
+            //             return false;
+            //     })
+            //     // $.ajaxSetup({
+            //     //     headers: {
+            //     //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //     //     }
+            //     // });
+            //     // $.ajax({
+            //     //     type: "DELETE",
+            //     //     url: "student/"+student_id,
+            //     //     // data: "data",
+            //     //     // dataType: "dataType",
+            //     //     success: function (response) {
+            //     //         // console.log(response.success);
+            //     //             $('#success_msg').text('');
+            //     //             $('#success_msg').addClass('alert alert-success');
+            //     //             $('#success_msg').text(response.message);
+            //     //             $('#DeleteStudentModal').modal('hide');
+            //     //             $('.delete_student_confirm').text('Yes, Delete');
+            //     //             fetchStudent()   
+            //     //     }
+            //     // });
+            // });
             // end script for delete student
             // start script for edit student
              $(document).on('click', '.edit_student', function (e) {
