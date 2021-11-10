@@ -11,6 +11,7 @@ use App\Http\Controllers\JobsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\AlertController;
+use App\Http\Controllers\BookController;
 use App\Http\Controllers\StudentController;
 
 use App\Jobs\CustomMailJob;
@@ -28,7 +29,8 @@ use Illuminate\Support\Facades\Mail;
 |
 */
 
-
+// pagination - ajax
+Route::get('books', [BookController::class, 'books']);
 
 
 // laravel ajax crud - sweetalert - pagination

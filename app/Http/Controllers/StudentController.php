@@ -26,6 +26,7 @@ class StudentController extends Controller
     {
         // $students = Student::all();
         $students = Student::orderBy('id', 'desc')->get();
+        // $students = Student::orderBy('id', 'desc')->paginate(10);
         return response()->json([
             'students' => $students
         ]);

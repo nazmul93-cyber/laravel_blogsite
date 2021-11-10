@@ -31,12 +31,17 @@ class DatabaseSeeder extends Seeder
         //         'designation' => Str::random(4),
         //     ]);
         // }
+        // for ($i = 0; $i < 100; $i++) {
+        //     DB::table('students')->insert([
+        //         'name' => Str::random(5),
+        //         'course' => Str::random(5),
+        //         'email' => Str::random(5) . '@gmail.com',
+        //         'phone' => Str::random(6),
+        //     ]);
+        // }
         for ($i = 0; $i < 100; $i++) {
-            DB::table('students')->insert([
+            DB::table('books')->insert([
                 'name' => Str::random(5),
-                'course' => Str::random(5),
-                'email' => Str::random(5) . '@gmail.com',
-                'phone' => Str::random(6),
             ]);
         }
     }
