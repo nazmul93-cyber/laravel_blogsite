@@ -12,10 +12,11 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\AlertController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\SendBulkEmailController;
 use App\Http\Controllers\StudentController;
 
-use App\Jobs\CustomMailJob;
-use App\Mail\CustomMail;
+// use App\Jobs\CustomMailJob;
+// use App\Mail\CustomMail;
 use Illuminate\Support\Facades\Mail;
 
 /*
@@ -28,6 +29,17 @@ use Illuminate\Support\Facades\Mail;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// new bulk mail queue job 
+Route::get('bulk_mail', [SendBulkEmailController::class, 'sendBulkEmail']);
+
+
+
+
+
+
+
+
 
 // pagination - ajax
 Route::get('books', [BookController::class, 'books']);
@@ -46,9 +58,8 @@ Route::resource('student', StudentController::class);
 
 
 
-// mail functions 
-
-Route::get('send-email', [MailController::class, "sendMailWithPDF"]);
+// mail functions  older version
+// Route::get('send-email', [MailController::class, "sendMailWithPDF"]);
 
 // new mail function
 // Route::get('mailed', function() {
@@ -58,17 +69,17 @@ Route::get('send-email', [MailController::class, "sendMailWithPDF"]);
 // });
 
 // new mail function with jobs
-Route::get('testmail', function () {
-    $details['name'] = "Target";
-    $details['email'] = "target@gmail.com";
+// Route::get('testmail', function () {
+//     $details['name'] = "Target";
+//     $details['email'] = "target@gmail.com";
 
-    dispatch(new CustomMailJob($details));
+//     dispatch(new CustomMailJob($details));
 
-    dd('sent');
-});
+//     dd('sent');
+// });
 
 
-//  sweet alert
+//  sweet alert 2
 Route::get('users', [AlertController::class, "users"]);
 Route::post('delete/{id}', [AlertController::class, "delete"]);
 

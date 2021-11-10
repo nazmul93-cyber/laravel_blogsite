@@ -1,0 +1,1 @@
+<h1>Congratulations ! All emails are being sent in the background</h1>
