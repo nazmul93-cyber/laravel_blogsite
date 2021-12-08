@@ -14,7 +14,8 @@ use App\Http\Controllers\AlertController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\SendBulkEmailController;
 use App\Http\Controllers\StudentController;
-
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\FeatureController;
 // use App\Jobs\CustomMailJob;
 // use App\Mail\CustomMail;
 use Illuminate\Support\Facades\Mail;
@@ -30,7 +31,76 @@ use Illuminate\Support\Facades\Mail;
 |
 */
 
-// new bulk mail queue job 
+
+// laravel-8 from scratch
+Route::get('/', function () {
+//    ddd(\App\Models\Post::all());
+//    ddd($posts[0]->getPath());
+//    ddd($posts[0]->getContents());
+    return view('posts', ['posts' => \App\Models\Post::all()]);
+
+
+
+
+
+
+
+
+    // Debugbar::startMeasure('render','Time for rendering');
+    // $articles = Cache::remember('articles',600, function() {
+    //     return Article::where('id','between',1,'and',2000)->get();
+    // });
+    // Debugbar::stopMeasure('render');
+    // $articles = Article::all();
+    // Debugbar::info($articles);
+
+});
+Route::get('/posts/{post}', function($slug){                                 //introducing wild-card
+    return view('post',['post' => \App\Models\Post::find($slug)]);          // refactor ctrl+alt+n  made the codes below inline
+//    // task: find a post by its slug and pass it to a view called "post"
+//    $post = \App\Models\Post::find($slug);                                                          // introducing Model
+//    return view('post',['post' => $post]);
+
+})->where('post','[A-z_\-]+');                          // called wildcard constraints
+
+//helpers
+    //whereAlpha()
+    //whereAlphaNumeric()
+    //whereNumber()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// eloquent modern practices
+Route::get('employee_data', [EmployeeController::class,'index']);
+Route::get('features', [FeatureController::class,'index']);
+
+
+
+
+// new bulk mail queue job
 Route::get('bulk_mail', [SendBulkEmailController::class, 'sendBulkEmail']);
 
 
@@ -45,7 +115,7 @@ Route::get('bulk_mail', [SendBulkEmailController::class, 'sendBulkEmail']);
 Route::get('books', [BookController::class, 'books']);
 
 
-// laravel ajax crud - sweetalert - pagination
+// laravel ajax crud - sweetalert
 Route::get('student/fetch_student', [StudentController::class, 'fetchStudent']);
 Route::resource('student', StudentController::class);
 
@@ -87,25 +157,6 @@ Route::post('delete/{id}', [AlertController::class, "delete"]);
 
 
 
-Route::get('/', function () {
-
-    // Debugbar::startMeasure('render','Time for rendering');
-
-    // $articles = Cache::remember('articles',600, function() {
-    //     return Article::where('id','between',1,'and',2000)->get();
-    // });   
-
-    // Debugbar::stopMeasure('render');
-
-
-
-
-    // $articles = Article::all();
-
-    // Debugbar::info($articles);
-
-    return view('welcome');
-});
 
 
 
