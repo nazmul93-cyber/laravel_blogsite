@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\SendBulkEmailController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\FeatureController;
+
 // use App\Jobs\CustomMailJob;
 // use App\Mail\CustomMail;
 use Illuminate\Support\Facades\Mail;
@@ -34,16 +36,54 @@ use Illuminate\Support\Facades\Mail;
 
 // laravel-8 from scratch
 Route::get('/', function () {
+    //    $posts = []
+
+    //using laravel collection approach instead of array_map
+    $posts = \App\Models\Post::all();
+    return view('scratch.posts', ['posts' => $posts]);
+
+
+    //using array_map instead of foreach loop - to make another array
+//    $posts = array_map(function($file){
+//                $document = \Spatie\YamlFrontMatter\YamlFrontMatter::parseFile($file);
+//                return new \App\Models\Post(
+//                    $document->title,
+//                    $document->excerpt,
+//                    $document->date,
+//                    $document->body(),
+//                    $document->slug
+//                );
+//    },$files);
+
+
+//    foreach ($files as $file) {
+//        $document = \Spatie\YamlFrontMatter\YamlFrontMatter::parseFile($file);
+//        $posts[] = new \App\Models\Post(
+//            $document->title,
+//            $document->excerpt,
+//            $document->date,
+//            $document->body(),
+//            $document->slug
+//        );
+//    }
+
+//    ddd($posts);
+//    ddd($posts[0]);
+//    ddd($posts[0]->title);
+
+
+//    $document = \Spatie\YamlFrontMatter\YamlFrontMatter::parseFile(resource_path('posts/my-fourth-post.html'));    // parseFile instead of parse gets file_get_contents
+
+    //ddd($document);
+    //ddd($document->body());
+    //ddd($document->matter('title'))s
+//    ddd($document->title);
+
+
 //    ddd(\App\Models\Post::all());
 //    ddd($posts[0]->getPath());
 //    ddd($posts[0]->getContents());
-    return view('posts', ['posts' => \App\Models\Post::all()]);
-
-
-
-
-
-
+//    return view('posts', ['posts' => \App\Models\Post::all()]);
 
 
     // Debugbar::startMeasure('render','Time for rendering');
@@ -55,60 +95,53 @@ Route::get('/', function () {
     // Debugbar::info($articles);
 
 });
-Route::get('/posts/{post}', function($slug){                                 //introducing wild-card
-    return view('post',['post' => \App\Models\Post::find($slug)]);          // refactor ctrl+alt+n  made the codes below inline
-//    // task: find a post by its slug and pass it to a view called "post"
-//    $post = \App\Models\Post::find($slug);                                                          // introducing Model
-//    return view('post',['post' => $post]);
 
-})->where('post','[A-z_\-]+');                          // called wildcard constraints
+
+// using route model binding with custom unique slug
+Route::get('/posts/{post:slug}', function (\App\Models\Post $post) {                     // instance of Post model $post name must be same as wild card {post} then they will be binded automatically. meaning $post id will fill wild card {post} s place
+    return view('scratch.post', ['post' => $post]);
+});
+
+Route::get('categories/{category:slug}', function(\App\Models\Category $category){
+    return view('scratch.posts',['posts' => $category->posts]);
+});
+
+
+
+// using route model binding with default id
+//Route::get('/posts/{post}', function (\App\Models\Post $post) {                     // instance of Post model $post name must be same as wild card {post} then they will be binded automatically. meaning $post id will fill wild card {post} s place
+//    return view('scratch.post', ['post' => $post]);
+//});
+
+
+
+
+
+
+
+
+//Route::get('/posts/{post}', function ($id) {                                 //introducing wild-card
+//    return view('scratch.post', ['post' => \App\Models\Post::findOrFail($id)]);          // refactor ctrl+alt+n  made the codes below inline
+////    // task: find a post by its slug and pass it to a view called "post"
+////    $post = \App\Models\Post::find($slug);                                                          // introducing Model
+////    return view('post',['post' => $post]);
+//
+//});                          // called wildcard constraints
+//})->where('post', '[A-z_\-]+');                          // called wildcard constraints
 
 //helpers
-    //whereAlpha()
-    //whereAlphaNumeric()
-    //whereNumber()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//whereAlpha()
+//whereAlphaNumeric()
+//whereNumber()
 
 
 // eloquent modern practices
-Route::get('employee_data', [EmployeeController::class,'index']);
-Route::get('features', [FeatureController::class,'index']);
-
-
+Route::get('employee_data', [EmployeeController::class, 'index']);
+Route::get('features', [FeatureController::class, 'index']);
 
 
 // new bulk mail queue job
 Route::get('bulk_mail', [SendBulkEmailController::class, 'sendBulkEmail']);
-
-
-
-
-
-
-
 
 
 // pagination - ajax
@@ -118,14 +151,6 @@ Route::get('books', [BookController::class, 'books']);
 // laravel ajax crud - sweetalert
 Route::get('student/fetch_student', [StudentController::class, 'fetchStudent']);
 Route::resource('student', StudentController::class);
-
-
-
-
-
-
-
-
 
 
 // mail functions  older version
@@ -154,34 +179,19 @@ Route::get('users', [AlertController::class, "users"]);
 Route::post('delete/{id}', [AlertController::class, "delete"]);
 
 
-
-
-
-
-
-
 // for queue and jobs
 // Route::get('queue',[QueueController::class,'runMyJob']);
 // Route::get('job',[JobsController::class,'TestJob']);
 Route::get('queue', [JobsController::class, 'runMyQueue']);
 
 
-
-
-
 // for caching ArticlesController
 Route::get('cache', [ArticlesController::class, 'index']);
-
 
 
 // for upload
 Route::get('upload', [UploadController::class, 'upload']);
 Route::post('upload', [UploadController::class, 'uploaded']);
-
-
-
-
-
 
 
 // for Form Validation - Registration [manual]
@@ -190,14 +200,11 @@ Route::get('/register', [RegisterController::class, 'register'])->middleware('cu
 Route::post('/register', [RegisterController::class, 'create'])->middleware('custom');
 
 
-
 // cutom authentication logic,session,middleware  for route middleware - only works with this
 Route::view('/login', 'login')->middleware('custom');
 Route::post('/login', [RegisterController::class, 'login'])->middleware('custom');
 Route::view('/dashboard', 'dashboard')->middleware('custom');
 Route::get('/logout', [RegisterController::class, 'logout'])->middleware('custom');
-
-
 
 
 // custom login using middleware and session    - for some reason group middleware doesn't work
@@ -217,8 +224,6 @@ Route::get('/logout', [RegisterController::class, 'logout'])->middleware('custom
 // Route::get('/logout',[RegisterController::class,'logout']);
 
 
-
-
 // for CRUD using Model
 
 Route::get('/create', function () {
@@ -236,10 +241,6 @@ Route::get('/delete/{id}', [UserController::class, 'delete']);
 Route::get('/update/{id}', [UserController::class, 'upForm']);
 
 Route::post('/update', [UserController::class, 'update']);
-
-
-
-
 
 
 // learnning route resource
