@@ -36,11 +36,33 @@ use Illuminate\Support\Facades\Mail;
 
 // laravel-8 from scratch
 Route::get('/', function () {
-    //    $posts = []
-
-    //using laravel collection approach instead of array_map
-    $posts = \App\Models\Post::all();
+    $posts = \App\Models\Post::latest()->with('category', 'author')->get();
     return view('scratch.posts', ['posts' => $posts]);
+});
+// using route model binding with custom unique slug
+Route::get('/posts/{post:slug}', function (\App\Models\Post $post) {                     // instance of Post model $post name must be same as wild card {post} then they will be binded automatically. meaning $post id will fill wild card {post} s place
+    return view('scratch.post', ['post' => $post]);
+});
+
+Route::get('categories/{category:slug}', function(\App\Models\Category $category){
+    return view('scratch.posts', ['posts' => $category->posts->load('category', 'author')]);
+});
+Route::get('authors/{author:username}', function(\App\Models\User $author){
+    return view('scratch.posts', ['posts' => $author->posts->load('category', 'author')]);
+});
+
+
+
+
+
+// functioning operations
+
+//Route::get('/', function () {
+//    //    $posts = []
+//
+//    //using laravel collection approach instead of array_map
+//    $posts = \App\Models\Post::all();
+//    return view('scratch.posts', ['posts' => $posts]);
 
 
     //using array_map instead of foreach loop - to make another array
@@ -94,17 +116,8 @@ Route::get('/', function () {
     // $articles = Article::all();
     // Debugbar::info($articles);
 
-});
+//});
 
-
-// using route model binding with custom unique slug
-Route::get('/posts/{post:slug}', function (\App\Models\Post $post) {                     // instance of Post model $post name must be same as wild card {post} then they will be binded automatically. meaning $post id will fill wild card {post} s place
-    return view('scratch.post', ['post' => $post]);
-});
-
-Route::get('categories/{category:slug}', function(\App\Models\Category $category){
-    return view('scratch.posts',['posts' => $category->posts]);
-});
 
 
 

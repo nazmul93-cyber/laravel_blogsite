@@ -23,8 +23,12 @@ class Post extends Authenticatable
         return $this->belongsTo(Category::class);
     }
 
-
-
+    public function author() {          //assumes foreign key is author_id whether originally it's user_id
+        return $this->belongsTo(User::class, 'user_id');
+    }
+//    public function user() {
+//        return $this->belongsTo(User::class);
+//    }
 
 
 
