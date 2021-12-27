@@ -19,6 +19,8 @@ class Post extends Authenticatable
 
     protected $fillable = ['title','excerpt','body','published_at'];
 
+//    protected $with = ['category', 'author'];
+
     public function category() {
         return $this->belongsTo(Category::class);
     }
@@ -29,6 +31,55 @@ class Post extends Authenticatable
 //    public function user() {
 //        return $this->belongsTo(User::class);
 //    }
+
+
+    public function scopeFilter($query, array $filters) {     //Post::newQuery->filter()  -first parameter is always $query which represents querybuilder. 2nd parameter $filters which received the array sent
+        $query->when($filters['search'] ?? false, fn($query, $search) =>
+        $query
+            ->where('title', 'like', '%'.$search.'%')
+            ->orWhere('body', 'like', '%'.$search.'%')
+        );
+
+        $query->when($filters['category'] ?? false, fn($query, $category) =>
+        $query
+            ->whereHas('category', fn($query) => $query->where('slug', $category))
+        );
+
+        $query->when($filters['author'] ?? false, fn($query, $author) =>
+            $query
+                ->whereHas('author', fn($query) => $query->where('username', $author))
+        );
+
+
+
+                                        //functioning with whereExists  (but whereHas is more code efficient)
+//        $query->when($filters['category'] ?? false, fn($query, $category) =>
+//            $query->whereExists(fn($query) =>                                             //whereExists accepts boolean - accepts or not dep. on true or false
+//                    $query
+//                        ->from('categories')
+//                        ->whereColumn('categories.id', 'posts.category_id')              // where takes 2nd parameter as string, here for dynamic values use whereColumn
+//                        ->where('categories.slug', $category)
+//            )
+//        );
+
+
+
+                             // alt way using if condition   (using when is more updated)
+//        if($filters['search'] ?? false){
+//            return $query
+//                        ->where('title', 'like', '%'.$filters['search'].'%')
+//                        ->orWhere('body', 'like', '%'.$filters['search'].'%');
+////        }
+
+
+                                // using request handler works fine     (Post model not suitable for handler operation)
+//        if(request('search')){
+//            return $query
+//                    ->where('title', 'like', '%'.request('search').'%')
+//                    ->orWhere('body', 'like', '%'.request('search').'%');
+//        }
+
+    }
 
 
 

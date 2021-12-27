@@ -53,6 +53,7 @@
         </div>
     </footer>
 </section>
+<script src="//unpkg.com/alpinejs" defer></script>
 </body>
 
 
@@ -105,7 +106,7 @@
 {{--    <meta name="viewport"--}}
 {{--          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">--}}
 {{--    <meta http-equiv="X-UA-Compatible" content="ie=edge">--}}
-{{--    <title>Laravel-8 from scratch</title>--}}
+{{--    <title>Laravel-8 from posts</title>--}}
 {{--    <link rel="stylesheet" href="/app.css">--}}
 {{--</head>--}}
 {{--<body>--}}

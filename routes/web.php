@@ -34,22 +34,40 @@ use Illuminate\Support\Facades\Mail;
 */
 
 
-// laravel-8 from scratch
-Route::get('/', function () {
-    $posts = \App\Models\Post::latest()->with('category', 'author')->get();
-    return view('scratch.posts', ['posts' => $posts]);
-});
-// using route model binding with custom unique slug
-Route::get('/posts/{post:slug}', function (\App\Models\Post $post) {                     // instance of Post model $post name must be same as wild card {post} then they will be binded automatically. meaning $post id will fill wild card {post} s place
-    return view('scratch.post', ['post' => $post]);
-});
+// laravel-8 from posts
+Route::get('/', [
+    \App\Http\Controllers\PostController::class, 'index'
+])->name('home');
 
-Route::get('categories/{category:slug}', function(\App\Models\Category $category){
-    return view('scratch.posts', ['posts' => $category->posts->load('category', 'author')]);
-});
-Route::get('authors/{author:username}', function(\App\Models\User $author){
-    return view('scratch.posts', ['posts' => $author->posts->load('category', 'author')]);
-});
+// using route model binding with custom unique slug
+Route::get('/posts/{post:slug}', [
+    \App\Http\Controllers\PostController::class, 'show'
+]);
+
+
+
+
+
+
+
+
+
+
+            // working fine
+// instance of Post model $post name must be same as wild card {post} then they will be binded automatically. meaning $post id will fill wild card {post} s place
+
+//Route::get('categories/{category:slug}', function(\App\Models\Category $category){
+//    return view('posts.posts', [
+//'posts' => $category->posts->load('category', 'author'),
+//'currentCategory' => $category, 'categories' => \App\Models\Category::all()
+//]);
+//})->name('category');                 //all these functionality are managed in Post scopeFilter now
+
+//Route::get('authors/{author:username}', function(\App\Models\User $author){
+//    return view('posts.index', [
+//        'posts' => $author->posts->load('category', 'author'),
+//    ]);
+//});
 
 
 
@@ -62,7 +80,7 @@ Route::get('authors/{author:username}', function(\App\Models\User $author){
 //
 //    //using laravel collection approach instead of array_map
 //    $posts = \App\Models\Post::all();
-//    return view('scratch.posts', ['posts' => $posts]);
+//    return view('posts.posts', ['posts' => $posts]);
 
 
     //using array_map instead of foreach loop - to make another array
@@ -123,7 +141,7 @@ Route::get('authors/{author:username}', function(\App\Models\User $author){
 
 // using route model binding with default id
 //Route::get('/posts/{post}', function (\App\Models\Post $post) {                     // instance of Post model $post name must be same as wild card {post} then they will be binded automatically. meaning $post id will fill wild card {post} s place
-//    return view('scratch.post', ['post' => $post]);
+//    return view('posts.post', ['post' => $post]);
 //});
 
 
@@ -134,7 +152,7 @@ Route::get('authors/{author:username}', function(\App\Models\User $author){
 
 
 //Route::get('/posts/{post}', function ($id) {                                 //introducing wild-card
-//    return view('scratch.post', ['post' => \App\Models\Post::findOrFail($id)]);          // refactor ctrl+alt+n  made the codes below inline
+//    return view('posts.post', ['post' => \App\Models\Post::findOrFail($id)]);          // refactor ctrl+alt+n  made the codes below inline
 ////    // task: find a post by its slug and pass it to a view called "post"
 ////    $post = \App\Models\Post::find($slug);                                                          // introducing Model
 ////    return view('post',['post' => $post]);

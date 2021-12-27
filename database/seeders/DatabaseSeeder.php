@@ -20,12 +20,16 @@ class DatabaseSeeder extends Seeder
     {
 
 //    User::factory(10)->create();
-        $user = User::factory()->create([                           //specifying just one value
-            'name' => 'naz al',
-        ]);
-    Post::factory(5)->create([
-        'user_id' => $user->id,
-    ]);
+    Post::factory(15)->create();
+
+
+
+//        $user = User::factory()->create([                           //specifying just one value
+//            'name' => 'naz al',
+//        ]);
+//    Post::factory(15)->create([
+//        'user_id' => $user->id,
+//    ]);
 
 
 
