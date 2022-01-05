@@ -34,15 +34,16 @@ use Illuminate\Support\Facades\Mail;
 */
 
 
-// laravel-8 from posts
-Route::get('/', [
-    \App\Http\Controllers\PostController::class, 'index'
-])->name('home');
-
-// using route model binding with custom unique slug
-Route::get('/posts/{post:slug}', [
-    \App\Http\Controllers\PostController::class, 'show'
-]);
+//      //      //      //      laravel-8 from scratch
+Route::get('/', [\App\Http\Controllers\PostController::class, 'index'])->name('home');
+    // using route model binding with custom unique slug
+Route::get('/posts/{post:slug}', [\App\Http\Controllers\PostController::class, 'show']);
+    //registration  - logged in users shouldn't get access
+Route::get('/register', [\App\Http\Controllers\RegistrationController::class, 'create'])->middleware('guest');
+Route::post('/register', [\App\Http\Controllers\RegistrationController::class, 'store'])->middleware('guest');
+Route::get('/login', [\App\Http\Controllers\SessionsController::class, 'create'])->middleware('guest');
+Route::post('/login', [\App\Http\Controllers\SessionsController::class, 'store'])->middleware('guest');
+Route::post('/logout', [\App\Http\Controllers\SessionsController::class, 'destroy'])->middleware('auth');
 
 
 
@@ -227,15 +228,15 @@ Route::post('upload', [UploadController::class, 'uploaded']);
 
 // for Form Validation - Registration [manual]
 
-Route::get('/register', [RegisterController::class, 'register'])->middleware('custom');
-Route::post('/register', [RegisterController::class, 'create'])->middleware('custom');
+//Route::get('/register', [RegisterController::class, 'register'])->middleware('custom');
+//Route::post('/register', [RegisterController::class, 'create'])->middleware('custom');
 
 
 // cutom authentication logic,session,middleware  for route middleware - only works with this
-Route::view('/login', 'login')->middleware('custom');
-Route::post('/login', [RegisterController::class, 'login'])->middleware('custom');
-Route::view('/dashboard', 'dashboard')->middleware('custom');
-Route::get('/logout', [RegisterController::class, 'logout'])->middleware('custom');
+//Route::view('/login', 'login')->middleware('custom');
+//Route::post('/login', [RegisterController::class, 'login'])->middleware('custom');
+//Route::view('/dashboard', 'dashboard')->middleware('custom');
+//Route::get('/logout', [RegisterController::class, 'logout'])->middleware('custom');
 
 
 // custom login using middleware and session    - for some reason group middleware doesn't work

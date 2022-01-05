@@ -35,9 +35,12 @@ class Post extends Authenticatable
 
     public function scopeFilter($query, array $filters) {     //Post::newQuery->filter()  -first parameter is always $query which represents querybuilder. 2nd parameter $filters which received the array sent
         $query->when($filters['search'] ?? false, fn($query, $search) =>
-        $query
-            ->where('title', 'like', '%'.$search.'%')
-            ->orWhere('body', 'like', '%'.$search.'%')
+        $query->where(fn($query)=>                                                  // group these search term together like this
+                $query
+                ->where('title', 'like', '%'.$search.'%')
+                ->orWhere('body', 'like', '%'.$search.'%')
+            )
+
         );
 
         $query->when($filters['category'] ?? false, fn($query, $category) =>

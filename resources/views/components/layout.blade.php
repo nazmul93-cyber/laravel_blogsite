@@ -14,8 +14,30 @@
             </a>
         </div>
 
-        <div class="mt-8 md:mt-0">
-            <a href="/" class="text-xs font-bold uppercase">Home Page</a>
+        <div class="mt-8 md:mt-0 flex items-center">
+
+                @auth
+                    <span class="text-xs font-bold uppercase">Welcome, {{ auth()->user()->name }}!</span>
+                    <form action="/logout" method="POST">
+                        @csrf
+                        <button type="submit" class="ml-6 text-xs font-semibold text-blue-500">Log Out</button>
+                    </form>
+                @else
+                    <a href="/register" class="text-xs font-bold uppercase">register</a>
+                    <a href="/login" class="text-xs font-bold uppercase ml-6">login</a>
+                @endauth
+
+{{--            @guest--}}
+{{--                <a href="/register" class="text-xs font-bold uppercase">register</a>--}}
+{{--            @endguest--}}
+
+{{--            alt. ways--}}
+{{--            @if(! auth()->check())--}}
+{{--                <a href="/register" class="text-xs font-bold uppercase">register</a>--}}
+{{--            @endif --}}
+{{--            @unless(auth()->check())--}}
+{{--                <a href="/register" class="text-xs font-bold uppercase">register</a>--}}
+{{--            @endunless--}}
 
             <a href="#" class="bg-blue-500 ml-3 rounded-full text-xs font-semibold text-white uppercase py-3 px-5">
                 Subscribe for Updates
@@ -53,6 +75,7 @@
         </div>
     </footer>
 </section>
+<x-flash/>
 <script src="//unpkg.com/alpinejs" defer></script>
 </body>
 

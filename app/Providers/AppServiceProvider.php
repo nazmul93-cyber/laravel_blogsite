@@ -17,8 +17,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // 
-        Paginator::useBootstrap();
+
+//        Paginator::useBootstrap();
     }
 
     /**
@@ -28,9 +28,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // to fix weird arrow while using paginate. cause, it takes tailwind as default 
-        Paginator::useBootstrap();
-        Schema::defaultStringLength(191);
-        
+        // to fix weird arrow while using paginate. cause, it takes tailwind as default
+//        Paginator::useBootstrap();
+//        Schema::defaultStringLength(191);
+
     }
 }

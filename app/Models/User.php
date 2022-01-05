@@ -13,7 +13,7 @@ class User extends Authenticatable
 
     public $timestamps = false;
 
-    protected $fillable = ['name','email','password'];
+    protected $fillable = ['name','username','email','password'];
 
     public function posts(){
         return $this->hasMany(Post::class);
@@ -47,4 +47,16 @@ class User extends Authenticatable
      protected $casts = [
          'email_verified_at' => 'datetime',
      ];
+
+
+     // mutator to bcrypt password
+     public function setPasswordAttribute($password)
+     {
+         $this->attributes['password'] = bcrypt($password);
+     }
+
+     // accessor to uppercase username
+     public function getUsernameAttribute($username) {
+         return ucwords($username);
+     }
 }

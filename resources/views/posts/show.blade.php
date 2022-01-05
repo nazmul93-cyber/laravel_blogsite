@@ -50,6 +50,7 @@
                 </div>
             </article>
         </main>
+</x-layout>
 
 
 
@@ -100,7 +101,6 @@
 {{--                    <?= $post?>         short code for echo--}}
 {{--        </article>--}}
 
-</x-layout>
 
 
 
