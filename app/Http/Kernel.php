@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\MustBeAdmin;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -70,5 +71,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
         'custom' => \App\Http\Middleware\CustomAuth::class,
+//        'admin' => MustBeAdmin::class,
     ];
 }

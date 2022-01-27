@@ -18,10 +18,10 @@ class SessionsController extends Controller
 
         if(! auth()->attempt($attributes)) {
             throw \Illuminate\Validation\ValidationException::withMessages(['email' => 'Your provided credentials could not be verified.']);
-            return redirect('/')->with('success', 'Welcome Back!');
         }
 
         session()->regenerate();        // to save from session fixation attack
+        return redirect('/')->with('success', 'Welcome Back!');
 
 
 

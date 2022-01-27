@@ -35,12 +35,11 @@ class SendBulkEmailJob implements ShouldQueue
     public function handle()
     {
         //
-        // $users = User::get();
+         $users = User::get();
         // dd($users);
-        // foreach ($users as $key => $value) {
-        // $to_mail['email'] = $value->email;
-
-        Mail::to($this->mail_data['email'])
-            ->send(new SendBulkEmail($this->mail_data));
+         foreach ($users as $user) {
+             Mail::to($user->email)
+                 ->send(new SendBulkEmail($this->mail_data));
+         }
     }
 }

@@ -17,8 +17,8 @@ class Post extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $fillable = ['title','excerpt','body','published_at'];
-
+//    protected $fillable = ['title','excerpt','body','published_at'];
+        protected $guarded = [];
 //    protected $with = ['category', 'author'];
 
     public function category() {
@@ -27,6 +27,11 @@ class Post extends Authenticatable
 
     public function author() {          //assumes foreign key is author_id whether originally it's user_id
         return $this->belongsTo(User::class, 'user_id');
+
+    }
+
+    public function comments() {
+        return $this->hasMany(Comment::class);
     }
 //    public function user() {
 //        return $this->belongsTo(User::class);

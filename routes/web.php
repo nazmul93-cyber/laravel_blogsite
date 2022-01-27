@@ -38,15 +38,37 @@ use Illuminate\Support\Facades\Mail;
 Route::get('/', [\App\Http\Controllers\PostController::class, 'index'])->name('home');
     // using route model binding with custom unique slug
 Route::get('/posts/{post:slug}', [\App\Http\Controllers\PostController::class, 'show']);
+Route::post('/posts/{post:slug}/comments', [\App\Http\Controllers\PostCommentsController::class, 'store']);
+
+
+
     //registration  - logged in users shouldn't get access
 Route::get('/register', [\App\Http\Controllers\RegistrationController::class, 'create'])->middleware('guest');
 Route::post('/register', [\App\Http\Controllers\RegistrationController::class, 'store'])->middleware('guest');
 Route::get('/login', [\App\Http\Controllers\SessionsController::class, 'create'])->middleware('guest');
 Route::post('/login', [\App\Http\Controllers\SessionsController::class, 'store'])->middleware('guest');
 Route::post('/logout', [\App\Http\Controllers\SessionsController::class, 'destroy'])->middleware('auth');
+    // admin        -single routes
+//Route::get('admin/posts', [\App\Http\Controllers\AdminPostController::class, 'index'])->middleware('can:admin');
+//Route::get('admin/posts/create', [\App\Http\Controllers\AdminPostController::class, 'create'])->middleware('can:admin');
+//Route::post('admin/posts', [\App\Http\Controllers\AdminPostController::class, 'store'])->middleware('can:admin');
+//Route::get('admin/posts/{post}/edit', [\App\Http\Controllers\AdminPostController::class, 'edit'])->middleware('can:admin');
+//Route::patch('admin/posts/{post}', [\App\Http\Controllers\AdminPostController::class, 'update'])->middleware('can:admin');
+//Route::delete('admin/posts/{post}', [\App\Http\Controllers\AdminPostController::class, 'destroy'])->middleware('can:admin');
 
 
+    // admin group routes
+Route::middleware('can:admin')->group(function (){
 
+    Route::resource('admin/posts', \App\Http\Controllers\AdminPostController::class)->except('show');
+
+//    Route::get('admin/posts', [\App\Http\Controllers\AdminPostController::class, 'index']);
+//    Route::get('admin/posts/create', [\App\Http\Controllers\AdminPostController::class, 'create']);
+//    Route::post('admin/posts/', [\App\Http\Controllers\AdminPostController::class, 'store']);
+//    Route::get('admin/posts/{post}/edit', [\App\Http\Controllers\AdminPostController::class, 'edit']);
+//    Route::patch('admin/posts/{post}', [\App\Http\Controllers\AdminPostController::class, 'update']);
+//    Route::delete('admin/posts/{post}', [\App\Http\Controllers\AdminPostController::class, 'destroy']);
+});
 
 
 
