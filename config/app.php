@@ -106,6 +106,12 @@ return [
     |
     */
 
+    'available_locales' => [
+        'English' => 'en',
+        'Russian' => 'ru',
+        'French' => 'fr',
+    ],
+
     'faker_locale' => 'en_US',
 
     /*

@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
@@ -22,7 +23,7 @@ class DatabaseSeeder extends Seeder
 
 //    User::factory(10)->create();
 //    Post::factory(15)->create();
-    Comment::factory(10)->create();
+//    Comment::factory(10)->create();
 
 
 
@@ -94,7 +95,12 @@ class DatabaseSeeder extends Seeder
 
 
 
+        DB::table('doctors')->insert([
+                    'name' =>"jimmy",
+                    'email' => "najimmycuet12@gmail.com",
+                    'password' => Hash::make("asdf1234"),
 
+                ]);
 
   // previously done - all functioning
         //     for ($i=0; $i < 10000; $i++) {

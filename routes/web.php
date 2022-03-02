@@ -75,6 +75,37 @@ Route::middleware('can:admin')->group(function (){
 
 
 
+// notification
+Route::get('send-notification', [\App\Http\Controllers\NotificationController::class, 'sendInvoiceNotification']);
+
+
+
+
+
+
+// localization routes
+Route::get('/localization/{locale?}', function ($locale = null) {
+    if (isset($locale) && in_array($locale, config('app.available_locales'))) {
+        app()->setLocale($locale);
+    }
+
+    return view('localization');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             // working fine
 // instance of Post model $post name must be same as wild card {post} then they will be binded automatically. meaning $post id will fill wild card {post} s place

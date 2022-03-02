@@ -59,4 +59,9 @@ class User extends Authenticatable
      public function getUsernameAttribute($username) {
          return ucwords($username);
      }
+
+    public function routeNotificationForDiscord($notification)
+    {
+        return 'https://discord.com/api/webhooks/945644757936406529/NzruUanJCBNEHqcXemV1UxVpXuek90PNRZ0d-Ql9M3V5j4iyOrVa2yHTttfTz1rZGyVq';
+    }
 }
